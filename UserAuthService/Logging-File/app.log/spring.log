@@ -1,0 +1,84 @@
+2025-08-30T15:29:15.418+05:30  INFO 10212 --- [UserAuthService] [restartedMain] c.w.U.UserAuthServiceApplication         : Starting UserAuthServiceApplication using Java 21.0.7 with PID 10212 (E:\Cap_Stone_Project\UserAuthService\target\classes started by uttam in E:\Cap_Stone_Project\UserAuthService)
+2025-08-30T15:29:15.430+05:30  INFO 10212 --- [UserAuthService] [restartedMain] c.w.U.UserAuthServiceApplication         : No active profile set, falling back to 1 default profile: "default"
+2025-08-30T15:29:15.555+05:30  INFO 10212 --- [UserAuthService] [restartedMain] o.s.c.c.c.ConfigServerConfigDataLoader   : Fetching config from server at : http://localhost:9099
+2025-08-30T15:29:15.557+05:30  INFO 10212 --- [UserAuthService] [restartedMain] o.s.c.c.c.ConfigServerConfigDataLoader   : Located environment: name=UserAuthService, profiles=[default], label=null, version=49b3360b92e02ae36ce59c157b3f55aa0cfab318, state=
+2025-08-30T15:29:15.562+05:30  INFO 10212 --- [UserAuthService] [restartedMain] .e.DevToolsPropertyDefaultsPostProcessor : Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2025-08-30T15:29:15.563+05:30  INFO 10212 --- [UserAuthService] [restartedMain] .e.DevToolsPropertyDefaultsPostProcessor : For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2025-08-30T15:29:17.677+05:30  INFO 10212 --- [UserAuthService] [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2025-08-30T15:29:17.910+05:30  INFO 10212 --- [UserAuthService] [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 215 ms. Found 2 JPA repository interfaces.
+2025-08-30T15:29:18.374+05:30  INFO 10212 --- [UserAuthService] [restartedMain] o.s.cloud.context.scope.GenericScope     : BeanFactory id=423532cd-30b5-3da8-81ed-b174c0592fcf
+2025-08-30T15:29:19.530+05:30  INFO 10212 --- [UserAuthService] [restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port 8089 (http)
+2025-08-30T15:29:19.565+05:30  INFO 10212 --- [UserAuthService] [restartedMain] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2025-08-30T15:29:19.566+05:30  INFO 10212 --- [UserAuthService] [restartedMain] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.44]
+2025-08-30T15:29:19.685+05:30  INFO 10212 --- [UserAuthService] [restartedMain] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2025-08-30T15:29:19.685+05:30  INFO 10212 --- [UserAuthService] [restartedMain] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 4120 ms
+2025-08-30T15:29:20.291+05:30  INFO 10212 --- [UserAuthService] [restartedMain] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2025-08-30T15:29:20.402+05:30  INFO 10212 --- [UserAuthService] [restartedMain] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 6.6.26.Final
+2025-08-30T15:29:20.471+05:30  INFO 10212 --- [UserAuthService] [restartedMain] o.h.c.internal.RegionFactoryInitiator    : HHH000026: Second-level cache disabled
+2025-08-30T15:29:20.980+05:30  INFO 10212 --- [UserAuthService] [restartedMain] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2025-08-30T15:29:21.067+05:30  INFO 10212 --- [UserAuthService] [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2025-08-30T15:29:21.721+05:30  INFO 10212 --- [UserAuthService] [restartedMain] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@24e4891c
+2025-08-30T15:29:21.725+05:30  INFO 10212 --- [UserAuthService] [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2025-08-30T15:29:21.941+05:30  INFO 10212 --- [UserAuthService] [restartedMain] org.hibernate.orm.connections.pooling    : HHH10001005: Database info:
+	Database JDBC URL [Connecting through datasource 'HikariDataSource (HikariPool-1)']
+	Database driver: undefined/unknown
+	Database version: 8.0.41
+	Autocommit mode: undefined/unknown
+	Isolation level: undefined/unknown
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2025-08-30T15:29:23.540+05:30  INFO 10212 --- [UserAuthService] [restartedMain] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2025-08-30T15:29:23.737+05:30  INFO 10212 --- [UserAuthService] [restartedMain] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2025-08-30T15:29:24.529+05:30 DEBUG 10212 --- [UserAuthService] [restartedMain] org.hibernate.SQL                        : 
+    select
+        u1_0.id,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password,
+        u1_0.user_role 
+    from
+        user u1_0 
+    where
+        u1_0.user_role=?
+2025-08-30T15:29:24.688+05:30  INFO 10212 --- [UserAuthService] [restartedMain] eAuthenticationProviderManagerConfigurer : Global AuthenticationManager configured with AuthenticationProvider bean with name authenticationProvider
+2025-08-30T15:29:24.759+05:30  WARN 10212 --- [UserAuthService] [restartedMain] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2025-08-30T15:29:25.610+05:30  INFO 10212 --- [UserAuthService] [restartedMain] o.s.b.a.e.web.EndpointLinksResolver      : Exposing 17 endpoints beneath base path '/actuator'
+2025-08-30T15:29:26.675+05:30  INFO 10212 --- [UserAuthService] [restartedMain] o.s.b.d.a.OptionalLiveReloadServer       : LiveReload server is running on port 35729
+2025-08-30T15:29:26.742+05:30  INFO 10212 --- [UserAuthService] [restartedMain] DiscoveryClientOptionalArgsConfiguration : Eureka HTTP Client uses RestTemplate.
+2025-08-30T15:29:26.827+05:30  WARN 10212 --- [UserAuthService] [restartedMain] iguration$LoadBalancerCaffeineWarnLogger : Spring Cloud LoadBalancer is currently working with the default cache. While this cache implementation is useful for development and tests, it's recommended to use Caffeine cache in production.You can switch to using Caffeine cache, by adding it and org.springframework.cache.caffeine.CaffeineCacheManager to the classpath.
+2025-08-30T15:29:26.996+05:30  INFO 10212 --- [UserAuthService] [restartedMain] o.s.c.n.eureka.InstanceInfoFactory       : Setting initial instance status as: STARTING
+2025-08-30T15:29:27.047+05:30  INFO 10212 --- [UserAuthService] [restartedMain] com.netflix.discovery.DiscoveryClient    : Initializing Eureka in region us-east-1
+2025-08-30T15:29:27.057+05:30  INFO 10212 --- [UserAuthService] [restartedMain] c.n.d.s.r.aws.ConfigClusterResolver      : Resolving eureka endpoints via configuration
+2025-08-30T15:29:27.074+05:30  INFO 10212 --- [UserAuthService] [restartedMain] com.netflix.discovery.DiscoveryClient    : Disable delta property : false
+2025-08-30T15:29:27.075+05:30  INFO 10212 --- [UserAuthService] [restartedMain] com.netflix.discovery.DiscoveryClient    : Single vip registry refresh property : null
+2025-08-30T15:29:27.075+05:30  INFO 10212 --- [UserAuthService] [restartedMain] com.netflix.discovery.DiscoveryClient    : Force full registry fetch : false
+2025-08-30T15:29:27.075+05:30  INFO 10212 --- [UserAuthService] [restartedMain] com.netflix.discovery.DiscoveryClient    : Application is null : false
+2025-08-30T15:29:27.075+05:30  INFO 10212 --- [UserAuthService] [restartedMain] com.netflix.discovery.DiscoveryClient    : Registered Applications size is zero : true
+2025-08-30T15:29:27.075+05:30  INFO 10212 --- [UserAuthService] [restartedMain] com.netflix.discovery.DiscoveryClient    : Application version is -1: true
+2025-08-30T15:29:27.075+05:30  INFO 10212 --- [UserAuthService] [restartedMain] com.netflix.discovery.DiscoveryClient    : Getting all instance registry info from the eureka server
+2025-08-30T15:29:27.614+05:30  INFO 10212 --- [UserAuthService] [restartedMain] com.netflix.discovery.DiscoveryClient    : The response status is 200
+2025-08-30T15:29:27.619+05:30  INFO 10212 --- [UserAuthService] [restartedMain] com.netflix.discovery.DiscoveryClient    : Starting heartbeat executor: renew interval is: 30
+2025-08-30T15:29:27.623+05:30  INFO 10212 --- [UserAuthService] [restartedMain] c.n.discovery.InstanceInfoReplicator     : InstanceInfoReplicator onDemand update allowed rate per min is 4
+2025-08-30T15:29:27.626+05:30  INFO 10212 --- [UserAuthService] [restartedMain] com.netflix.discovery.DiscoveryClient    : Discovery Client initialized at timestamp 1756547967626 with initial instances count: 2
+2025-08-30T15:29:27.633+05:30  INFO 10212 --- [UserAuthService] [restartedMain] o.s.c.n.e.s.EurekaServiceRegistry        : Registering application USERAUTHSERVICE with eureka with status UP
+2025-08-30T15:29:27.636+05:30  INFO 10212 --- [UserAuthService] [restartedMain] com.netflix.discovery.DiscoveryClient    : Saw local status change event StatusChangeEvent [timestamp=1756547967635, current=UP, previous=STARTING]
+2025-08-30T15:29:27.639+05:30  INFO 10212 --- [UserAuthService] [DiscoveryClient-InstanceInfoReplicator-%d] com.netflix.discovery.DiscoveryClient    : DiscoveryClient_USERAUTHSERVICE/chandu:UserAuthService:8089: registering service...
+2025-08-30T15:29:27.679+05:30  INFO 10212 --- [UserAuthService] [restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port 8089 (http) with context path '/'
+2025-08-30T15:29:27.680+05:30  INFO 10212 --- [UserAuthService] [restartedMain] .s.c.n.e.s.EurekaAutoServiceRegistration : Updating port to 8089
+2025-08-30T15:29:27.744+05:30  INFO 10212 --- [UserAuthService] [restartedMain] c.w.U.UserAuthServiceApplication         : Started UserAuthServiceApplication in 14.473 seconds (process running for 16.168)
+2025-08-30T15:29:27.746+05:30  INFO 10212 --- [UserAuthService] [DiscoveryClient-InstanceInfoReplicator-%d] com.netflix.discovery.DiscoveryClient    : DiscoveryClient_USERAUTHSERVICE/chandu:UserAuthService:8089 - registration status: 204
+2025-08-30T15:29:28.161+05:30  INFO 10212 --- [UserAuthService] [RMI TCP Connection(10)-127.0.0.1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2025-08-30T15:29:28.162+05:30  INFO 10212 --- [UserAuthService] [RMI TCP Connection(10)-127.0.0.1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2025-08-30T15:29:28.166+05:30  INFO 10212 --- [UserAuthService] [RMI TCP Connection(10)-127.0.0.1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 4 ms
+2025-08-30T15:34:27.086+05:30  INFO 10212 --- [UserAuthService] [AsyncResolver-bootstrap-executor-%d] c.n.d.s.r.aws.ConfigClusterResolver      : Resolving eureka endpoints via configuration
+2025-08-30T15:39:27.093+05:30  INFO 10212 --- [UserAuthService] [AsyncResolver-bootstrap-executor-%d] c.n.d.s.r.aws.ConfigClusterResolver      : Resolving eureka endpoints via configuration
+2025-08-30T15:44:27.100+05:30  INFO 10212 --- [UserAuthService] [AsyncResolver-bootstrap-executor-%d] c.n.d.s.r.aws.ConfigClusterResolver      : Resolving eureka endpoints via configuration
+2025-08-30T15:44:57.239+05:30  INFO 10212 --- [UserAuthService] [RMI TCP Connection(30)-127.0.0.1] inMXBeanRegistrar$SpringApplicationAdmin : Application shutdown requested.
+2025-08-30T15:44:57.307+05:30  INFO 10212 --- [UserAuthService] [RMI TCP Connection(31)-127.0.0.1] inMXBeanRegistrar$SpringApplicationAdmin : Application shutdown requested.
+2025-08-30T15:44:57.363+05:30  INFO 10212 --- [UserAuthService] [RMI TCP Connection(30)-127.0.0.1] o.s.c.n.e.s.EurekaServiceRegistry        : Unregistering application USERAUTHSERVICE with eureka with status DOWN
+2025-08-30T15:44:57.367+05:30  INFO 10212 --- [UserAuthService] [RMI TCP Connection(30)-127.0.0.1] com.netflix.discovery.DiscoveryClient    : Saw local status change event StatusChangeEvent [timestamp=1756548897367, current=DOWN, previous=UP]
+2025-08-30T15:44:57.370+05:30  INFO 10212 --- [UserAuthService] [DiscoveryClient-InstanceInfoReplicator-%d] com.netflix.discovery.DiscoveryClient    : DiscoveryClient_USERAUTHSERVICE/chandu:UserAuthService:8089: registering service...
+2025-08-30T15:44:57.423+05:30  INFO 10212 --- [UserAuthService] [DiscoveryClient-InstanceInfoReplicator-%d] com.netflix.discovery.DiscoveryClient    : DiscoveryClient_USERAUTHSERVICE/chandu:UserAuthService:8089 - registration status: 204
+2025-08-30T15:44:57.568+05:30  INFO 10212 --- [UserAuthService] [RMI TCP Connection(32)-127.0.0.1] inMXBeanRegistrar$SpringApplicationAdmin : Application shutdown requested.
+2025-08-30T15:44:57.591+05:30  INFO 10212 --- [UserAuthService] [RMI TCP Connection(30)-127.0.0.1] o.s.b.w.e.tomcat.GracefulShutdown        : Commencing graceful shutdown. Waiting for active requests to complete
+2025-08-30T15:44:57.668+05:30  INFO 10212 --- [UserAuthService] [tomcat-shutdown] o.s.b.w.e.tomcat.GracefulShutdown        : Graceful shutdown complete
