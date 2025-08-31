@@ -14,7 +14,7 @@ public class PaymentEventConsumer {
 
 	private final NotificationService notificationService;
 
-	@KafkaListener(topics = "payment-notifications", groupId = "notification-service-group")
+	@KafkaListener(topics = "payment-notifications", groupId = "notification-service-group", containerFactory = "kafkaListenerContainerFactory")
 	public void consume(PaymentEventDTO event) {
 
 		String message = "Payment of amount " + event.getAmount() + " from user " + event.getSenderId() + " to user "

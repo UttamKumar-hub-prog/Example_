@@ -23,12 +23,14 @@ public class CustomerController {
 
 	private final CustomerService customerService;
 
-	@PostMapping("/")
+	@PostMapping("/saveDetails")
+
 	public ResponseEntity<Customer> SaveCustomerDetails(@RequestBody Customer customer) {
 		return ResponseEntity.ok(customerService.saveCustomerDetails(customer));
 	}
 
 	@GetMapping("/getAll")
+
 	public ResponseEntity<List<Customer>> GetAllCustomers(Pageable pageable) {
 
 		return ResponseEntity.ok(customerService.getAllCustomers(pageable).getContent());

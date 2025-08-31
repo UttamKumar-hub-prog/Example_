@@ -56,62 +56,69 @@ public class PaymentServiceImpl implements PaymentService {
 		// validating the balance if the verify the sender account have insufficient
 		// balance
 
-		// Create initial payment record with pending status
-
+		// Create initial payment record
 		Payment payment = new Payment();
 		payment.setSenderName(sender.getName());
-		payment.setSenderAccountNumber(sender.getAccountNumber());
+		payment.setSenderAccountNumber(senderAccount.getAccNo());
 		payment.setReceiverName(receiver.getName());
-		payment.setReceiverAccountNumber(receiver.getAccountNumber());
+		payment.setReceiverAccountNumber(receiverAccount.getAccNo());
 		payment.setAmount(amount);
 		payment.setPaymentStatus(PaymentStatus.PENDING);
 
 		Payment savedPayment = paymentRepository.save(payment);
 
 		try {
-			// debit sender and credit receiver
+		    // Check balance
+		    if (senderAccount.getBalance() < amount) {
+		        throw new InsufficientBalanceException("Insufficient balance in sender's account");
+		    }
 
-			senderAccount.setBalance(senderAccount.getBalance() - amount.longValue());
-			receiverAccount.setBalance(receiverAccount.getBalance() + amount.longValue());
+		    // Debit sender and credit receiver
+		    senderAccount.setBalance(senderAccount.getBalance() - amount);
+		    receiverAccount.setBalance(receiverAccount.getBalance() + amount);
 
-			accountClient.updateAccount(senderAccount.getId(), senderAccount);
-			accountClient.updateAccount(receiverAccount.getId(), receiverAccount);
+		    accountClient.updateAccount(senderAccount.getId(), senderAccount);
+		    accountClient.updateAccount(receiverAccount.getId(), receiverAccount);
 
-			// Update payment status to SUCCESS
-			savedPayment.setPaymentStatus(PaymentStatus.SUCCESS);
+		    // Update status
+		    savedPayment.setPaymentStatus(PaymentStatus.SUCCESS);
 
-			// After updating sender and receiver accounts
-			PaymentEventDTO event = new PaymentEventDTO();
-			event.setPaymentId(savedPayment.getPaymentId());
-			event.setSenderId(senderId);
-			event.setReceiverId(receiver.getId());
-			event.setReceiverEmail(receiver.getEmail()); // added email
-			event.setAmount(amount);
-			event.setStatus("SUCCESS");
-			event.setTimestamp(LocalDateTime.now());
+		    // Create event
+		    PaymentEventDTO event = new PaymentEventDTO();
+		    event.setPaymentId(savedPayment.getPaymentId());
+		    event.setSenderId(senderId);
+		    event.setReceiverId(receiver.getId());
+		    event.setReceiverEmail(receiver.getEmail());
+		    event.setAmount(amount);
+		    event.setStatus("SUCCESS");
+		    event.setTimestamp(LocalDateTime.now());
 
-			kafkaTemplate.send(PAYMENT_TOPIC, event);
-			paymentRepository.save(savedPayment);
+		    // Send to Kafka
+		    try {
+		        kafkaTemplate.send(PAYMENT_TOPIC, event);
+		    } catch (Exception e) {
+		        logAudit(senderId, savedPayment.getPaymentId(), amount, "SUCCESS_WITHOUT_NOTIFICATION",
+		                 "Payment successful but Kafka failed: " + e.getMessage());
+		    }
 
-			logAudit(senderId, savedPayment.getPaymentId(), amount, "SUCCESS", "Payment successful");
+		    paymentRepository.save(savedPayment);
+		    logAudit(senderId, savedPayment.getPaymentId(), amount, "SUCCESS", "Payment successful");
 
-			return savedPayment;
+		    return savedPayment;
 
 		} catch (FeignException fe) {
-			savedPayment.setPaymentStatus(PaymentStatus.FAILED);
-			paymentRepository.save(savedPayment);
-			logAudit(senderId, savedPayment.getPaymentId(), amount, "FAILED", "Payment failed: " + fe.getMessage());
-			throw new PaymentProcessingException("Payment failed due to remote service error");
+		    savedPayment.setPaymentStatus(PaymentStatus.FAILED);
+		    paymentRepository.save(savedPayment);
+		    logAudit(senderId, savedPayment.getPaymentId(), amount, "FAILED", "Remote service error: " + fe.getMessage());
+		    throw new PaymentProcessingException("Payment failed due to remote service error");
 
 		} catch (Exception e) {
-			savedPayment.setPaymentStatus(PaymentStatus.FAILED);
-			paymentRepository.save(savedPayment);
-			logAudit(senderId, savedPayment.getPaymentId(), amount, "FAILED", "Payment failed: " + e.getMessage());
-			throw new PaymentProcessingException("Payment failed");
+		    savedPayment.setPaymentStatus(PaymentStatus.FAILED);
+		    paymentRepository.save(savedPayment);
+		    logAudit(senderId, savedPayment.getPaymentId(), amount, "FAILED", "Unexpected error: " + e.getMessage());
+		    throw new PaymentProcessingException("Payment failed");
 		}
-
 	}
-
 	// Helper method for audit logging
 	private AuditLogDTO logAudit(Long userId, Long paymentId, Long amount, String status, String remarks) {
 		AuditLogDTO auditLog = new AuditLogDTO();

@@ -15,9 +15,9 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 @RequestMapping("/audits")
 public class AuditLogController {
-	
+
 	private final AuditLogService auditLogService;
-	
+
 	@PostMapping("/log")
     public ResponseEntity<AuditLog> log(@RequestBody AuditLog auditLog) {
         return ResponseEntity.ok(auditLogService.auditlogEvent(auditLog));

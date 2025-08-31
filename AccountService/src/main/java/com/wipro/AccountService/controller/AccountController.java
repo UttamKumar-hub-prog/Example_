@@ -26,10 +26,11 @@ public class AccountController {
 	private final AccountService accountService;
 
 	@PostMapping("/")
+	 
 	public ResponseEntity<Account> SaveAccount(@RequestBody Account account) {
 		return ResponseEntity.ok(accountService.saveAccount(account));
 	}
-
+	 
 	@GetMapping("/address/{address}")
 	public ResponseEntity<Account> GetAccountByAddress(@PathVariable String address) {
 		return ResponseEntity.ok(accountService.getAccountByAddress(address));
@@ -39,7 +40,7 @@ public class AccountController {
 	public ResponseEntity<Account> GetAccountById(@PathVariable Long id) {
 		return ResponseEntity.ok(accountService.getAccountById(id));
 	}
-
+	 
 	@GetMapping("/getAllAccounts")
 	public ResponseEntity<List<Account>> GetAllAccounts(Pageable pageable) {
 		return ResponseEntity.ok(accountService.getAllAccounts(pageable));

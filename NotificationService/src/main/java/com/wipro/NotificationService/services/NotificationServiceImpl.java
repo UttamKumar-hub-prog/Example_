@@ -34,11 +34,8 @@ public class NotificationServiceImpl implements NotificationService {
 
 	@Async
 	public void sendEmail(Long paymentId, Long userId, String recipientEmail, String message) {
+		Notification notification = saveNotification(paymentId, userId, message); // save first
 		try {
-			// Save notification in DB first
-			Notification notification = saveNotification(paymentId, userId, message);
-
-			// Send actual email
 			SimpleMailMessage mailMessage = new SimpleMailMessage();
 			mailMessage.setTo(recipientEmail);
 			mailMessage.setSubject("Payment Notification");
@@ -46,19 +43,20 @@ public class NotificationServiceImpl implements NotificationService {
 
 			mailSender.send(mailMessage);
 
-			// Update notification status
+			// Update status
 			notification.setStatus("SENT");
 			notificationRepository.save(notification);
 
 			System.out.println("Email sent to user " + userId + ": " + message);
 
 		} catch (Exception e) {
-			// Update notification as failed
-			Notification failedNotification = saveNotification(paymentId, userId, message);
-			failedNotification.setStatus("FAILED");
-			notificationRepository.save(failedNotification);
+			// Update status instead of saving new
+			notification.setStatus("FAILED");
+			notificationRepository.save(notification);
 
 			System.err.println("Failed to send email to user " + userId + ": " + e.getMessage());
+			e.printStackTrace(); // Print full stack trace for debugging
 		}
 	}
+
 }

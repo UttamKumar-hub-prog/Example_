@@ -2,6 +2,7 @@ package com.wipro.PaymentService.feign;
 
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import com.wipro.PaymentService.dto.AuditLogDTO;
 
@@ -9,6 +10,6 @@ import com.wipro.PaymentService.dto.AuditLogDTO;
 public interface AuditLogClient {
 	
 	@PostMapping("/log")
-	AuditLogDTO log(AuditLogDTO auditLogDTO);
+	AuditLogDTO log(@RequestBody AuditLogDTO auditLogDTO);
 
 }

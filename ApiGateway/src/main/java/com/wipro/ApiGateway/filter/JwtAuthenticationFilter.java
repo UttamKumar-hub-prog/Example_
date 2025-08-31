@@ -68,8 +68,8 @@ public class JwtAuthenticationFilter  extends AbstractGatewayFilterFactory<JwtAu
 	                }
 	                
 	                // For role-specific routes
-	                if (!isAuthorized(userRole, config.getRequiredRole())) {
-	                    System.out.println("User role " + userRole + " not authorized for " + config.getRequiredRole());
+	                if (!isAuthorized(userRole, config.getRequiredRoles())) {
+	                    System.out.println("User role " + userRole + " not authorized for " + config.getRequiredRoles());
 	                    return onError(exchange, "Insufficient permissions", HttpStatus.FORBIDDEN);
 	                }
 	                System.out.println("Authorization successful for role: " + userRole);
@@ -85,14 +85,14 @@ public class JwtAuthenticationFilter  extends AbstractGatewayFilterFactory<JwtAu
 	        };
 	    }
 
-	    private boolean isAuthorized(String userRole, String requiredRole) {
+	    private boolean isAuthorized(String userRole, String list) {
 	        // Admin can access everything
 	        if (userRole.equals("ADMIN")) {
 	            return true;
 	        }
 	        
 	        // For USER role, only allow access if the required role is USER
-	        return userRole.equals(requiredRole);
+	        return userRole.equals(list);
 	    }
 
 	    private Mono<Void> onError(ServerWebExchange exchange, String message, HttpStatus status) {
@@ -101,10 +101,13 @@ public class JwtAuthenticationFilter  extends AbstractGatewayFilterFactory<JwtAu
 	        response.setStatusCode(status);
 	        return response.setComplete();
 	    }
-
+	    
+	    
+	    
+	    
 	    public static class Config {
 	        private boolean requiresRole = false;
-	        private String requiredRole;
+	        private String requiredRoles;
 
 	        public boolean isRequiresRole() {
 	            return requiresRole;
@@ -114,13 +117,40 @@ public class JwtAuthenticationFilter  extends AbstractGatewayFilterFactory<JwtAu
 	            this.requiresRole = requiresRole;
 	        }
 
-	        public String getRequiredRole() {
-	            return requiredRole;
+	        public String getRequiredRoles() {
+	            return requiredRoles;
 	        }
 
+	        // Single role
 	        public void setRequiredRole(String requiredRole) {
-	            this.requiredRole = requiredRole;
+	            this.requiredRoles = requiredRole;
 	            this.requiresRole = true;
 	        }
+
+	        
 	    }
+
+//	    public static class Config {
+//	        private boolean requiresRole = false;
+//	        private String requiredRole;
+//
+//	        public boolean isRequiresRole() {
+//	            return requiresRole;
+//	        }
+//
+//	        public void setRequiresRole(boolean requiresRole) {
+//	            this.requiresRole = requiresRole;
+//	        }
+//
+//	        public String getRequiredRole() {
+//	            return requiredRole;
+//	        }
+//
+//	        public void setRequiredRole(String requiredRole) {
+//	            this.requiredRole = requiredRole;
+//	            this.requiresRole = true;
+//	        }
+
+		 
+	    
 }

@@ -30,7 +30,7 @@ public class JwtUtil {
 	    User user = (User) userDetails; 
 	    return Jwts.builder()
 	            .claims(extraClaims)
-	            //.claim("role", user.getUserRole().name())  
+	            .claim("role", user.getUserRole().name())  
 	            .subject(user.getUsername())
 	            .issuedAt(new Date(System.currentTimeMillis()))
 	            .expiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 24 * 10))
