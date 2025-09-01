@@ -17,46 +17,61 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class NotificationServiceImpl implements NotificationService {
 
-	private final NotificationRepository notificationRepository;
-	private final JavaMailSender mailSender;
+    private final NotificationRepository notificationRepository;
+    private final JavaMailSender mailSender;
 
-	@Transactional
-	public Notification saveNotification(Long paymentId, Long userId, String message) {
-		Notification notification = new Notification();
-		notification.setPaymentId(paymentId);
-		notification.setUserId(userId);
-		notification.setMessage(message);
-		notification.setStatus("PENDING");
-		notification.setCreatedAt(LocalDateTime.now());
+    /**
+     * Save notification to DB
+     */
+    @Transactional
+    public Notification saveNotification(Long paymentId, Long userId, String message, Long amount) {
+        Notification notification = new Notification();
+        notification.setPaymentId(paymentId);
+        notification.setUserId(userId);
+        notification.setMessage(message);
+        notification.setStatus("PENDING");
+        notification.setCreatedAt(LocalDateTime.now());
 
-		return notificationRepository.save(notification);
-	}
+        return notificationRepository.save(notification);
+    }
 
-	@Async
-	public void sendEmail(Long paymentId, Long userId, String recipientEmail, String message) {
-		Notification notification = saveNotification(paymentId, userId, message); // save first
-		try {
-			SimpleMailMessage mailMessage = new SimpleMailMessage();
-			mailMessage.setTo(recipientEmail);
-			mailMessage.setSubject("Payment Notification");
-			mailMessage.setText(message);
+    /**
+     * Send email asynchronously, validate amount before sending
+     */
+    @Async
+    public void sendEmail(Long paymentId, Long userId, String recipientEmail, String message, Long amount) {
+        // Validate amount
+        if (amount <= 0) {
+            System.err.println("Invalid payment amount (" + amount + "). Notification not sent.");
+            return;
+        }
 
-			mailSender.send(mailMessage);
+        // Save notification first
+        Notification notification = saveNotification(paymentId, userId, message, userId);
 
-			// Update status
-			notification.setStatus("SENT");
-			notificationRepository.save(notification);
+        try {
+            SimpleMailMessage mailMessage = new SimpleMailMessage();
+            mailMessage.setTo(recipientEmail);
+            mailMessage.setSubject("Payment Notification");
+            mailMessage.setText(message);
+           
 
-			System.out.println("Email sent to user " + userId + ": " + message);
+            mailSender.send(mailMessage);
 
-		} catch (Exception e) {
-			// Update status instead of saving new
-			notification.setStatus("FAILED");
-			notificationRepository.save(notification);
+            // Update notification status
+            notification.setStatus("SENT");
+            notificationRepository.save(notification);
 
-			System.err.println("Failed to send email to user " + userId + ": " + e.getMessage());
-			e.printStackTrace(); // Print full stack trace for debugging
-		}
-	}
+            System.out.println("Email sent to user " + userId + ": "+amount + message);
 
+        } catch (Exception e) {
+            // Update status as FAILED
+            notification.setStatus("FAILED");
+            notificationRepository.save(notification);
+
+            System.err.println("Failed to send email to user " + userId + ": " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
+ 
 }

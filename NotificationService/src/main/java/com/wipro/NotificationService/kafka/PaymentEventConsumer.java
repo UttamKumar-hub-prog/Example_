@@ -21,7 +21,7 @@ public class PaymentEventConsumer {
 				+ event.getReceiverId() + " is " + event.getStatus();
 
 		// Send email notification asynchronously
-		notificationService.sendEmail(event.getPaymentId(), event.getSenderId(), event.getSenderEmail(), message);
-		notificationService.sendEmail(event.getPaymentId(), event.getReceiverId(), event.getReceiverEmail(), message);
+		notificationService.sendEmail(event.getPaymentId(), event.getSenderId(), event.getSenderEmail(), message, event.getAmount());
+		notificationService.sendEmail(event.getPaymentId(), event.getReceiverId(), event.getReceiverEmail(), message, event.getAmount());
 	}
 }

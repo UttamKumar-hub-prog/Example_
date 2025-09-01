@@ -57,6 +57,12 @@ public class GatewayConfig {
 					config.setRequiredRole("ADMIN");
 					return f.filter(jwtAuthenticationFilter.apply(config));
 				}).uri("lb://AUDIT-SERVICE"))
+				
+				.route("feedback-service-route", r -> r.path("/feedbacks/**").filters(f -> {
+					JwtAuthenticationFilter.Config config = new JwtAuthenticationFilter.Config();
+//					config.setRequiredRole("ADMIN");
+					return f.filter(jwtAuthenticationFilter.apply(config));
+				}).uri("lb://FEEDBACK-SERVICE"))
 
 				.build();
 	}

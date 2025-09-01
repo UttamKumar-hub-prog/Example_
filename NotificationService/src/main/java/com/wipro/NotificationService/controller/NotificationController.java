@@ -15,15 +15,26 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class NotificationController {
 
-	private final NotificationService notificationService;
+    private final NotificationService notificationService;
 
-	// Example endpoint to send a notification via email
-	@PostMapping("/send")
-	public ResponseEntity<String> sendNotification(@RequestParam Long paymentId, @RequestParam Long userId,
-			@RequestParam String email, @RequestParam String message) {
+    /**
+     * Endpoint to send a payment notification via email
+     */
+    @PostMapping("/send")
+    public ResponseEntity<String> sendNotification(
+            @RequestParam Long paymentId,
+            @RequestParam Long userId,
+            @RequestParam String email,
+            @RequestParam String message,
+            @RequestParam Long amount) {
 
-		notificationService.sendEmail(paymentId, userId, email, message);
-		return ResponseEntity.ok("Notification processing started for user " + userId);
-	}
+        // Validate amount before sending
+        if (amount <= 0) {
+            return ResponseEntity.badRequest()
+                    .body("Invalid payment amount: " + amount + ". Notification not sent.");
+        }
 
+        notificationService.sendEmail(paymentId, userId, email, message, amount);
+        return ResponseEntity.ok("Notification processing started for user " + userId);
+    }
 }
