@@ -22,7 +22,7 @@ import com.wipro.UserAuthService.jwt.UserService;
 
 import lombok.RequiredArgsConstructor;
 
-@Configuration  
+@Configuration
 @EnableWebSecurity
 @EnableMethodSecurity
 @RequiredArgsConstructor
@@ -30,41 +30,36 @@ public class WebSecurityConfiguration {
 
 	private final JwtAuthenticationFilter jwtAuthenticationFilter;
 	private final UserService userService;
-	
+
 	@Bean
-    SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception 
-    {
+	SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 		return http.csrf(AbstractHttpConfigurer::disable)
-                .authorizeHttpRequests(request ->
-                        request.requestMatchers("/api/auth/**","/actuator/**").permitAll()
-                        .requestMatchers("/api/admin/**").hasAnyAuthority(UserRole.ADMIN.name())
-                        .requestMatchers("/api/user/**").hasAnyAuthority(UserRole.USER.name())
-                        .anyRequest().authenticated())
-			                .sessionManagement(session -> session.
-			                        sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-			                .authenticationProvider(authenticationProvider())
-                .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
-               . httpBasic(Customizer.withDefaults()).build();             
-    }
-	
-	
-    @Bean
-    PasswordEncoder passwordEncoder() 
-    {
-        return new BCryptPasswordEncoder();
-    }
+				.authorizeHttpRequests(request -> request.requestMatchers("/auth/**", "/actuator/**").permitAll()
+						.requestMatchers("/admin/**").permitAll().requestMatchers("/user/**").permitAll().anyRequest()
+						.authenticated())
+				.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+				.authenticationProvider(authenticationProvider())
+				.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
+				.httpBasic(Customizer.withDefaults()).build();
+	}
+
+	@Bean
+	PasswordEncoder passwordEncoder() {
+		return new BCryptPasswordEncoder();
+	}
 
 	@Bean
 	public AuthenticationProvider authenticationProvider() {
-		DaoAuthenticationProvider authenticationProvider = new DaoAuthenticationProvider(userService.userDetailsService());
+		DaoAuthenticationProvider authenticationProvider = new DaoAuthenticationProvider(
+				userService.userDetailsService());
 
 		authenticationProvider.setPasswordEncoder(passwordEncoder()); // set the PasswordEncoder
 		return authenticationProvider;
 	}
-    
-    @Bean
-    AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception {
-        return config.getAuthenticationManager();
-    }
-  
+
+	@Bean
+	AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception {
+		return config.getAuthenticationManager();
+	}
+
 }

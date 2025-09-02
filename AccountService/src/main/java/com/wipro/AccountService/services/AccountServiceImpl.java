@@ -1,7 +1,6 @@
 package com.wipro.AccountService.services;
 
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -48,18 +47,21 @@ public class AccountServiceImpl implements AccountService {
 
 	@Override
 	public Account updateAccount(Long id, Account accountDetails) {
-		Optional<Account> existingAccountOpt = accountRepository.findById(id);
-	    if (existingAccountOpt.isPresent()) {
-	        Account existingAccount = existingAccountOpt.get();
-	        
-	        existingAccount.setUsername(accountDetails.getUsername());
-	        existingAccount.setAddress(accountDetails.getAddress());
-	        existingAccount.setAccNo(accountDetails.getAccNo());
-	        return accountRepository.save(existingAccount);
-	    } else {
-	        return null;
-	    }
+	    return accountRepository.findById(id)
+	        .map(existingAccount -> {
+	            existingAccount.setUsername(accountDetails.getUsername());
+	            existingAccount.setPan(accountDetails.getPan());
+	            existingAccount.setAadhaar(accountDetails.getAadhaar());
+	            existingAccount.setAccNo(accountDetails.getAccNo());
+	            existingAccount.setBankType(accountDetails.getBankType());
+	            existingAccount.setBalance(accountDetails.getBalance());
+	            existingAccount.setLoan(accountDetails.getLoan());
+	            existingAccount.setAddress(accountDetails.getAddress());
+	            return accountRepository.save(existingAccount);
+	        })
+	        .orElse(null);
 	}
+
 
 	@Override
 	public CustomerDTO fetchCustomerDetails(Long id) {

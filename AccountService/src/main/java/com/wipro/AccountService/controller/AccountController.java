@@ -26,7 +26,6 @@ public class AccountController {
 	private final AccountService accountService;
 
 	@PostMapping("/")
-	 
 	public ResponseEntity<Account> SaveAccount(@RequestBody Account account) {
 		return ResponseEntity.ok(accountService.saveAccount(account));
 	}
